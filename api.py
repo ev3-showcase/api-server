@@ -6,21 +6,30 @@ import paho.mqtt.client as mqtt
 import flask
 from flask import request, json
 
-broker = os.getenv('MQTT_BROKER', 'ts.rdy.one')
-port =  int(os.getenv('MQTT_PORT', 11883))
-pub_name = os.getenv('HOSTNAME', ('publisher-' + uuid.uuid4().hex.upper()[0:6]))
-websocket = strtobool(os.getenv('MQTT_SOCKET', 'False'))
-wait_timer = int(os.getenv('MQTT_WAITTIME', 1))
 
+
+websocket = strtobool(os.getenv('MQTT_SOCKET', 'False'))
+pub_name = os.getenv('HOSTNAME', ('publisher-' + uuid.uuid4().hex.upper()[0:6]))
 if websocket:
     client = mqtt.Client(pub_name,transport='websockets')
 else:
     client = mqtt.Client(pub_name)
 
-client.connect(broker, port, 60)
-client.loop_start()
+def create_app():
+    app = flask.Flask(__name__)
+    def run_on_start(*args, **argv):
+        broker = os.getenv('MQTT_BROKER', 'ts.rdy.one')
+        port =  int(os.getenv('MQTT_PORT', 11883))
+        wait_timer = int(os.getenv('MQTT_WAITTIME', 1))
 
-app = flask.Flask(__name__)
+        print ("Run init sequence")
+        print ("Connecting ...")
+        client.connect(broker, port, 60)
+        print ("Starting Loop...")
+        client.loop_start()
+    run_on_start()
+    return app
+app = create_app()
 app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
