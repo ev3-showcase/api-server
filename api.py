@@ -10,8 +10,8 @@ from flask_mqtt import Mqtt
 
 app = flask.Flask(__name__)
 app.config['SECRET'] = 'my secret key'
-app.config['MQTT_BROKER_URL'] = 'ts.rdy.one'
-app.config['MQTT_BROKER_PORT'] = 11883
+app.config['MQTT_BROKER_URL'] = os.getenv('MQTT_BROKER', 'localhost')
+app.config['MQTT_BROKER_PORT'] = int(os.getenv('MQTT_PORT', 1883))
 app.config['MQTT_USERNAME'] = ''
 app.config['MQTT_PASSWORD'] = ''
 app.config['MQTT_KEEPALIVE'] = 60
