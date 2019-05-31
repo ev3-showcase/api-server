@@ -84,6 +84,15 @@ def api_accelerate():
     if request.headers['Content-Type'] == 'application/json':
         message = request.json
         logger.info(message)
+        logger.warning(message)
+        logger.error(message)
+        logger.info("message")
+        logger.warning("message")
+        logger.error("message")
+        print(message)
+        print("message")
+
+
 
         #speed_perc = message["speed"]
         #mqtt.publish('car/speed', int(speed_perc))
