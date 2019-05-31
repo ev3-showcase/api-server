@@ -5,35 +5,38 @@ import os
 import json
 import sys
 import time
+import logging
 
 from distutils.util import strtobool
 
 import paho.mqtt.client as mqtt
 
+loglevel = os.getenv('LOGLEVEL', 'info')
+
+logging.basicConfig(level=getattr(logging, loglevel.upper()),stream=sys.stderr)
+logger = logging.getLogger(__name__)
+
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected as %s with result code %s" % (sub_name, str(rc)))
-    client.subscribe("car/steering")
-    print("Connected to car/steering")
-    client.subscribe("car/speed")
-    print("Connected to car/speed")
+    logging.info("Connected as %s with result code %s" % (sub_name, str(rc)))
+    topics = ["car/steering","car/speed"]
+    for topic in topics:
+        client.subscribe(topic)
+        logging.info(f'Connected to {topic}')
 
 def on_message(client, userdata, msg):
-    #print(sys.getdefaultencoding())
-    #print(sys.stdout.encoding)
-    #print(sys.version)
-    print("Message!")
-    message = msg.payload.decode('utf-8')
-    print(message)
+    #logging.debug(sys.getdefaultencoding())
+    #logging.debug(sys.stdout.encoding)
+    #logging.debug(sys.version)
+    logging.info("Message Received!")
+    logging.debug(msg.payload.decode('utf-8'))
 
 def sigterm_handler(signal, frame):
     client.disconnect()
-    print('System shutting down, closing connection')
+    logging.info('System shutting down, closing connection')
     sys.exit(0)
 
 signal.signal(signal.SIGTERM, sigterm_handler)
-
-
 
 def main():
 
@@ -42,16 +45,17 @@ def main():
     client.connect(broker, port, 60)
 
     client.loop_start()
-    time.sleep(60)
+    time.sleep(duration)
     client.loop_stop()
 
 
 if __name__ == '__main__':
-    broker = os.getenv('MQTT_BROKER', 'ts.rdy.one')
-    port =  int(os.getenv('MQTT_PORT', 11883))
+    broker = os.getenv('MQTT_BROKER', 'localhost')
+    port =  int(os.getenv('MQTT_PORT', 1883))
     sub_name = os.getenv('HOSTNAME', ('subscriber-' + uuid.uuid4().hex.upper()[0:6]))
     websocket = strtobool(os.getenv('MQTT_SOCKET', 'False'))
     client = mqtt.Client(sub_name)
+    duration =  int(os.getenv('DURATION', 300))
     main()
 
 

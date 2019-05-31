@@ -1,12 +1,15 @@
 import os
 import uuid
 import json
+import logging
 from distutils.util import strtobool
 import flask
 from flask import request, json
 from flask_mqtt import Mqtt
 
-
+loglevel = os.getenv('LOGLEVEL', 'info')
+logging.basicConfig(level=getattr(logging, loglevel.upper()),stream=sys.stderr)
+logger = logging.getLogger(__name__)
 
 app = flask.Flask(__name__)
 app.config['SECRET'] = 'my secret key'
@@ -59,7 +62,6 @@ def api_message():
         return "415 Unsupported Media Type ;)"
 
 
-
 # publish auf 2 topics mit int ganzahlwerten 
 # car/speed
 # car/steering
@@ -67,6 +69,63 @@ def api_message():
 #validieren
 
 #(subrout /topics (LIST/CREATE/DELETE))
+
+# ----------- Das sind die Routes für den Echo Skill -----------
+
+def resolve_echo_request(echo_request):
+
+
+
+@app.route('/api/v1/publish/echo/accelerate', methods = ['POST'])
+def api_accelerate():
+
+    if request.headers['Content-Type'] == 'application/json':
+        message = request.json
+        logger.info(message)
+
+        #speed_perc = message["speed"]
+        #mqtt.publish('car/speed', int(speed_perc))
+        #angle_perc = message["steering"]
+        #mqtt.publish('car/steering', int(angle_perc))
+        return "POST Received"
+
+    else:
+        return "415 Unsupported Media Type ;)"
+
+@app.route('/api/v1/publish/echo/stop', methods = ['POST'])
+def api_stop():
+
+    if request.headers['Content-Type'] == 'application/json':
+        message = request.json
+        logger.info(message)
+        
+        #speed_perc = message["speed"]
+        #mqtt.publish('car/speed', int(speed_perc))
+        #angle_perc = message["steering"]
+        #mqtt.publish('car/steering', int(angle_perc))
+        return "POST Received"
+
+    else:
+        return "415 Unsupported Media Type ;)"
+
+@app.route('/api/v1/publish/echo/steer', methods = ['POST'])
+def api_steer():
+
+    if request.headers['Content-Type'] == 'application/json':
+        message = request.json
+        logger.info(message)
+        
+        #speed_perc = message["speed"]
+        #mqtt.publish('car/speed', int(speed_perc))
+        #angle_perc = message["steering"]
+        #mqtt.publish('car/steering', int(angle_perc))
+        return "POST Received"
+
+    else:
+        return "415 Unsupported Media Type ;)"
+
+# ----------- Echo Skill ende -----------
+
 
 @app.errorhandler(404)
 def page_not_found(e):
