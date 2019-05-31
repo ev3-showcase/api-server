@@ -81,8 +81,10 @@ def resolve_echo_request(echo_request):
 @app.route('/api/v1/publish/echo', methods = ['POST'])
 def api_accelerate():
     logger.info(request.headers)
-    logger.info(request)
-    if request.headers['Content-Type'] == 'application/json;charset=UTF-8':
+    message = request.json
+    logger.info(message)
+    
+    if request.headers['Content-Type'] == 'application/json; charset=UTF-8':
         message = request.json
         logger.info(message)
         logger.warning(message)
