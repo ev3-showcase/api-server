@@ -80,7 +80,8 @@ def resolve_echo_request(echo_request):
 
 @app.route('/api/v1/publish/echo', methods = ['POST'])
 def api_accelerate():
-
+    logger.info(request.headers)
+    logger.info(request)
     if request.headers['Content-Type'] == 'application/json':
         message = request.json
         logger.info(message)
@@ -101,10 +102,10 @@ def api_accelerate():
         return "POST Received"
 
     else:
-        logger.info("415 Unsupported Media Type ;)")
-        logger.warning("415 Unsupported Media Type ;)")
+        #logger.info("415 Unsupported Media Type ;)")
+        #logger.warning("415 Unsupported Media Type ;)")
         logger.error("415 Unsupported Media Type ;)")
-        print("415 Unsupported Media Type ;)")
+        #print("415 Unsupported Media Type ;)")
         return "415 Unsupported Media Type ;)"
 
 
