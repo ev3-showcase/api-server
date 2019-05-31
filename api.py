@@ -81,6 +81,7 @@ def resolve_echo_request(echo_request):
 @app.route('/api/v1/publish/echo', methods = ['POST'])
 def api_accelerate():
     logger.info(request.headers)
+    logger.warning("Content Type:" + request.headers["Content-Type"])
     message = request.json
     logger.info(message)
     
@@ -88,27 +89,27 @@ def api_accelerate():
         "version": "1.0",
         "response": {
             "outputSpeech": {
-            "type": "Dein Wunsch sei mir Befehl.",
-            "text": "Dein wunsch sei mir Befehl. Brummmmmmmm",
-            "playBehavior": "REPLACE_ENQUEUED"      
+                "type": "Dein Wunsch sei mir Befehl.",
+                "text": "Dein wunsch sei mir Befehl. Brummmmmmmm",
+                "playBehavior": "REPLACE_ENQUEUED"      
             },
             "reprompt": {
-            "outputSpeech": {
-                "type": "Soll ich weiterfahren?",
-                "text": "Soll ich weiterfahren?",
-                "playBehavior": "REPLACE_ENQUEUED"             
-            }
+                "outputSpeech": {
+                    "type": "Soll ich weiterfahren?",
+                    "text": "Soll ich weiterfahren?",
+                    "playBehavior": "REPLACE_ENQUEUED"             
+                }
             },
             "shouldEndSession": true
         }
-        }
+    }
 
     request-body = json.loads(response-json)
 
     response = Response(response=json.dumps(request-body), status=200, mimetype='application/json;charset=UTF-8')
     return response
 
-    #if request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+    #if request.headers['Content-Type'] == 'application/json':
     #    message = request.json
     #    logger.info(message)
     #    logger.warning(message)
