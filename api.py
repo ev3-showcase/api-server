@@ -82,7 +82,7 @@ def resolve_echo_request(echo_request):
 def api_accelerate():
     logger.info(request.headers)
     logger.info(request)
-    if request.headers['Content-Type'] == 'application/json':
+    if request.headers['Content-Type'] == 'application/json;charset=UTF-8':
         message = request.json
         logger.info(message)
         logger.warning(message)
