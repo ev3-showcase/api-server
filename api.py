@@ -106,6 +106,8 @@ def api_accelerate():
 
     requestbody = json.loads(responsejson)
 
+    # do stuff
+
     response = Response(response=json.dumps(requestbody), status=200, mimetype='application/json;charset=UTF-8')
     return response
 
