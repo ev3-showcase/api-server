@@ -107,7 +107,7 @@ def api_accelerate():
 
     # do stuff
 
-    response = Response(response=json.dumps(responsejson), status=200, mimetype='application/json;charset=UTF-8')
+    response = Response(response=json.dumps(responsejson), status=200, mimetype='application/json')
     return response
 
     #if request.headers['Content-Type'] == 'application/json':
