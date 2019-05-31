@@ -5,7 +5,7 @@ import json
 import logging
 from distutils.util import strtobool
 import flask
-from flask import request, json
+from flask import request, json, Response, jsonify
 from flask_mqtt import Mqtt
 
 loglevel = os.getenv('LOGLEVEL', 'info')
@@ -84,16 +84,40 @@ def api_accelerate():
     message = request.json
     logger.info(message)
     
-    if request.headers['Content-Type'] == 'application/json; charset=UTF-8':
-        message = request.json
-        logger.info(message)
-        logger.warning(message)
-        logger.error(message)
-        logger.info("message")
-        logger.warning("message")
-        logger.error("message")
-        print(message)
-        print("message")
+    response-json = {
+        "version": "1.0",
+        "response": {
+            "outputSpeech": {
+            "type": "Dein Wunsch sei mir Befehl.",
+            "text": "Dein wunsch sei mir Befehl. Brummmmmmmm",
+            "playBehavior": "REPLACE_ENQUEUED"      
+            },
+            "reprompt": {
+            "outputSpeech": {
+                "type": "Soll ich weiterfahren?",
+                "text": "Soll ich weiterfahren?",
+                "playBehavior": "REPLACE_ENQUEUED"             
+            }
+            },
+            "shouldEndSession": true
+        }
+        }
+
+    request-body = json.loads(response-json)
+
+    response = Response(response=json.dumps(request-body), status=200, mimetype='application/json;charset=UTF-8')
+    return response
+
+    #if request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+    #    message = request.json
+    #    logger.info(message)
+    #    logger.warning(message)
+    #    logger.error(message)
+    #    logger.info("message")
+    #    logger.warning("message")
+    #    logger.error("message")
+    #    print(message)
+    #    print("message")+
 
 
 
@@ -101,14 +125,14 @@ def api_accelerate():
         #mqtt.publish('car/speed', int(speed_perc))
         #angle_perc = message["steering"]
         #mqtt.publish('car/steering', int(angle_perc))
-        return "POST Received"
+        #return "POST Received"
 
-    else:
+    #else:
         #logger.info("415 Unsupported Media Type ;)")
         #logger.warning("415 Unsupported Media Type ;)")
-        logger.error("415 Unsupported Media Type ;)")
+        #logger.error("415 Unsupported Media Type ;)")
         #print("415 Unsupported Media Type ;)")
-        return "415 Unsupported Media Type ;)"
+        #return "415 Unsupported Media Type ;)"
 
 
 # ----------- Echo Skill ende -----------
