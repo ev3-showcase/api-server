@@ -78,7 +78,7 @@ def resolve_echo_request(echo_request):
 
 
 
-@app.route('/api/v1/publish/echo/accelerate', methods = ['POST'])
+@app.route('/api/v1/publish/echo', methods = ['POST'])
 def api_accelerate():
 
     if request.headers['Content-Type'] == 'application/json':
@@ -94,37 +94,6 @@ def api_accelerate():
     else:
         return "415 Unsupported Media Type ;)"
 
-@app.route('/api/v1/publish/echo/stop', methods = ['POST'])
-def api_stop():
-
-    if request.headers['Content-Type'] == 'application/json':
-        message = request.json
-        logger.info(message)
-        
-        #speed_perc = message["speed"]
-        #mqtt.publish('car/speed', int(speed_perc))
-        #angle_perc = message["steering"]
-        #mqtt.publish('car/steering', int(angle_perc))
-        return "POST Received"
-
-    else:
-        return "415 Unsupported Media Type ;)"
-
-@app.route('/api/v1/publish/echo/steer', methods = ['POST'])
-def api_steer():
-
-    if request.headers['Content-Type'] == 'application/json':
-        message = request.json
-        logger.info(message)
-
-        #speed_perc = message["speed"]
-        #mqtt.publish('car/speed', int(speed_perc))
-        #angle_perc = message["steering"]
-        #mqtt.publish('car/steering', int(angle_perc))
-        return "POST Received"
-
-    else:
-        return "415 Unsupported Media Type ;)"
 
 # ----------- Echo Skill ende -----------
 
