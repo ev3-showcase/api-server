@@ -81,11 +81,11 @@ def resolve_echo_request(echo_request):
 @app.route('/api/v1/publish/echo', methods = ['POST'])
 def api_accelerate():
     logger.info(request.headers)
-    logger.warning("Content Type:" + request.headers["Content-Type"])
+    logger.warning("Content Type:"+request.headers["Content-Type"])
     message = request.json
     logger.info(message)
     
-    response-json = {
+    responsejson = {
         "version": "1.0",
         "response": {
             "outputSpeech": {
@@ -100,13 +100,13 @@ def api_accelerate():
                     "playBehavior": "REPLACE_ENQUEUED"             
                 }
             },
-            "shouldEndSession": true
+            "shouldEndSession": True
         }
     }
 
-    request-body = json.loads(response-json)
+    requestbody = json.loads(responsejson)
 
-    response = Response(response=json.dumps(request-body), status=200, mimetype='application/json;charset=UTF-8')
+    response = Response(response=json.dumps(requestbody), status=200, mimetype='application/json;charset=UTF-8')
     return response
 
     #if request.headers['Content-Type'] == 'application/json':
