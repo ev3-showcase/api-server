@@ -73,6 +73,7 @@ def api_message():
 # ----------- Das sind die Routes für den Echo Skill -----------
 
 def resolve_echo_request(echo_request):
+    pass
 
 
 
@@ -114,7 +115,7 @@ def api_steer():
     if request.headers['Content-Type'] == 'application/json':
         message = request.json
         logger.info(message)
-        
+
         #speed_perc = message["speed"]
         #mqtt.publish('car/speed', int(speed_perc))
         #angle_perc = message["steering"]
