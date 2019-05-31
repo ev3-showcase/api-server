@@ -101,6 +101,10 @@ def api_accelerate():
         return "POST Received"
 
     else:
+        logger.info("415 Unsupported Media Type ;)")
+        logger.warning("415 Unsupported Media Type ;)")
+        logger.error("415 Unsupported Media Type ;)")
+        print("415 Unsupported Media Type ;)")
         return "415 Unsupported Media Type ;)"
 
 
