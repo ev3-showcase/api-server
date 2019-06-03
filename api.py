@@ -95,12 +95,12 @@ def stop_car():
     stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt.'
     return statement(stopCar_msg)
 
-@ask.intent("StopIntent")
+@ask.intent("AMAZON.StopIntent")
 def stop_car():
     stop_msg = 'Okay, dann fahre ich halt allein nachhause. Tschüss'
     return statement(stop_msg)
 
-@ask.intent("HelpIntent")
+@ask.intent("AMAZON.HelpIntent")
 def stop_car():
     help_msg = 'Du kannst das Auto abbiegen lassen, beschleunigen und anhalten. Rede einfach mit mir.'
     return statement(help_msg)
