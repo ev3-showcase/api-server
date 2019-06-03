@@ -3,16 +3,17 @@ import sys
 import uuid
 import json
 import logging
+import requests
 from distutils.util import strtobool
-import flask
-from flask import request, json, Response, jsonify
+from flask import Flask, request, json, Response, jsonify
+from flask_ask import Ask, statement, question, session
 from flask_mqtt import Mqtt
 
 loglevel = os.getenv('LOGLEVEL', 'info')
 logging.basicConfig(level=getattr(logging, loglevel.upper()),stream=sys.stderr)
 logger = logging.getLogger(__name__)
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.config['SECRET'] = 'my secret key'
 app.config['MQTT_BROKER_URL'] = os.getenv('MQTT_BROKER', 'localhost')
 app.config['MQTT_BROKER_PORT'] = int(os.getenv('MQTT_PORT', 1883))
@@ -20,11 +21,10 @@ app.config['MQTT_USERNAME'] = ''
 app.config['MQTT_PASSWORD'] = ''
 app.config['MQTT_KEEPALIVE'] = 60
 app.config['MQTT_TLS_ENABLED'] = False
-
 pub_name = os.getenv('HOSTNAME', ('publisher-' + uuid.uuid4().hex.upper()[0:6]))
 
 mqtt = Mqtt(app)
-
+ask = Ask(app, "/api/v1/publish/echo")
 #def create_app():
 #    app = flask.Flask(__name__)
 #    def run_on_start(*args, **argv):
@@ -71,44 +71,72 @@ def api_message():
 
 #(subrout /topics (LIST/CREATE/DELETE))
 
-# ----------- Das sind die Routes für den Echo Skill -----------
+# ----------- Das sind die Funktionen für den Echo Skill -----------
 
 def resolve_echo_request(echo_request):
     pass
 
+@ask.launch
+def start_skill():
+    welcome_message = 'Ok, I will start the engine. Now you can start driving.'
+    return question(welcome_message)
+
+@ask.intent("SteerIntent")
+def steer_car():
+    steer_message = 'I can feel the corner.'
+    return question(steer_message)
+
+@ask.intent("AccelerateIntent")
+def accelerate_car():
+    accel_msg = 'Can you feel, how it does push you in the seat?'
+    return question(accel_msg)
+
+@ask.intent("StopCarIntent")
+def stop_car():
+    stop_msg = 'Oops, it seems i stalled the car.'
+    return statement(stop_msg)
 
 
-@app.route('/api/v1/publish/echo', methods = ['POST'])
-def api_accelerate():
-    logger.info(request.headers)
-    logger.warning("Content Type:"+request.headers["Content-Type"])
-    message = request.json
-    logger.info(message)
-    
-    responsejson = {
-        "version": "1.0",
-        "response": {
-            "outputSpeech": {
-                "type": "Dein Wunsch sei mir Befehl.",
-                "text": "Dein wunsch sei mir Befehl. Brummmmmmmm",
-                "playBehavior": "REPLACE_ENQUEUED"      
-            },
-            "reprompt": {
-                "outputSpeech": {
-                    "type": "Soll ich weiterfahren?",
-                    "text": "Soll ich weiterfahren?",
-                    "playBehavior": "REPLACE_ENQUEUED"             
-                }
-            },
-            "shouldEndSession": True
-        }
-    }
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<h1>404</h1><p>The resource could not be found.</p>", 404
+
+app.run(host='0.0.0.0', port=8080)
+
+
+#@app.route('/api/v1/publish/echo', methods = ['POST'])
+#def api_accelerate():
+#    logger.info(request.headers)
+#    logger.warning("Content Type:"+request.headers["Content-Type"])
+#    message = request.json
+#    logger.info(message)
+#    
+#    responsejson = {
+#        "version": "1.0",
+#        "response": {
+#            "outputSpeech": {
+#                "type": "Dein Wunsch sei mir Befehl.",
+#                "text": "Dein wunsch sei mir Befehl. Brummmmmmmm",
+#                "playBehavior": "REPLACE_ENQUEUED"      
+#            },
+#            "reprompt": {
+#                "outputSpeech": {
+#                    "type": "Soll ich weiterfahren?",
+#                    "text": "Soll ich weiterfahren?",
+#                    "playBehavior": "REPLACE_ENQUEUED"             
+#                }
+#            },
+#            "shouldEndSession": True
+#        }
+#    }
+#
 
     # do stuff
 
-    response = Response(response=json.dumps(responsejson), status=200, mimetype='application/json')
-    return response
+#    response = Response(response=json.dumps(responsejson), status=200, mimetype='application/json')
+#    return response
 
     #if request.headers['Content-Type'] == 'application/json':
     #    message = request.json
@@ -138,12 +166,3 @@ def api_accelerate():
 
 
 # ----------- Echo Skill ende -----------
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return "<h1>404</h1><p>The resource could not be found.</p>", 404
-
-app.run(host='0.0.0.0', port=8080)
-
-
