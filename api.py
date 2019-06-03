@@ -80,13 +80,18 @@ def start_skill():
     welcome_message = 'Okay. Ich starte den Motor. Du kannst jetzt losfahren.'
     return question(welcome_message)
 
-@ask.intent("SteerIntent")
-def steer_car():
+@ask.intent("SteerIntent", default={'angle': 'None', 'direction': 'None'})
+def steer_car(angle, direction):
+    logger.info(f"angle: {angle}")
+    logger.info(f"direction: {direction}")
     steer_message = 'Halt dich fest, jetzt geht es in die Kurve.'
     return question(steer_message)
 
-@ask.intent("AccelerateIntent")
-def accelerate_car():
+@ask.intent("AccelerateIntent", default={'accelerationdirection': 'None', 'speed': 'None', 'speedvalue': 'None'})
+def accelerate_car(accelerationdirection,speed,speedvalue):
+    logger.info(f"accelerationdirection: {accelerationdirection}")
+    logger.info(f"speed: {speed}")
+    logger.info(f"speedvalue: {speedvalue}")
     accel_msg = 'Fühlst du, wie es dich in den Sitz presst?'
     return question(accel_msg)
 
