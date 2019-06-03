@@ -74,11 +74,8 @@ def api_message():
 
 
 
-def resolve_echo_request(echo_request):
-    pass
-
 @ask.launch
-def stark_skill():
+def start_skill():
     welcome_message = 'Okay. Ich starte den Motor. Du kannst jetzt losfahren.'
     return question(welcome_message)
 
@@ -86,7 +83,7 @@ def stark_skill():
 def steer_car(angle, direction):
     
     tight_angle = ["scharf", "stark", "hart", "eng"]
-    wide_angle = ["leicht", "weit","etwas","seicht"]
+    wide_angle = ["leicht", "weit", "etwas", "seicht", "ein bisschen", "bisschen"]
     left_dir = ["links", "links rum", "linker hand","left"]
     right_dir = ["rechts", "rechts rum", "rechter hand" "right"]
     steer_input = 60
