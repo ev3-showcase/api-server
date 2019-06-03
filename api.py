@@ -72,33 +72,95 @@ def api_message():
 
 # ----------- Das sind die Funktionen für den Echo Skill -----------
 
+
+
 def resolve_echo_request(echo_request):
     pass
 
 @ask.launch
-def start_skill():
+def stark_skill():
     welcome_message = 'Okay. Ich starte den Motor. Du kannst jetzt losfahren.'
     return question(welcome_message)
 
 @ask.intent("SteerIntent", default={'angle': 'None', 'direction': 'None'})
 def steer_car(angle, direction):
+    
+    tight_angle = ["scharf", "stark", "hart", "eng"]
+    wide_angle = ["leicht", "weit","etwas","seicht"]
+    left_dir = ["links", "links rum", "linker hand","left"]
+    right_dir = ["rechts", "rechts rum", "rechter hand" "right"]
+    steer_input = 60
+
+    if angle in tight_angle:
+        steer_input = 90
+    elif angle in wide_angle:
+        steer_input = 30
+    else:
+        pass
+    
+    if direction in left_dir:
+        angle_perc = steer_input * -1
+        mqtt.publish('car/steering', angle_perc)
+        logger.info(f"Steering: {angle_perc}")
+        msg_val = "nach links"
+    elif direction in right_dir:
+        angle_perc = steer_input
+        mqtt.publish('car/steering', angle_perc)
+        logger.info(f"Steering: {angle_perc}")
+        msg_val = "nach rechts"
+    else:
+        logger.error(f"Invalid Values for Intent: angle: {angle}, direction: {direction}")
+        msg_val = "überhaupt nicht"
+
+    
     logger.info(f"angle: {angle}")
     logger.info(f"direction: {direction}")
-    steer_message = 'Halt dich fest, jetzt geht es in die Kurve.'
+    steer_message = f'Halt dich fest, jetzt geht es {msg_val} in die Kurve.'
     return question(steer_message)
 
 @ask.intent("AccelerateIntent", default={'accelerationdirection': 'None', 'speed': 'None', 'speedvalue': 'None'})
 def accelerate_car(accelerationdirection,speed,speedvalue):
+
+    forward = ["vorwärts", "nach vorne", "geradeaus", "forward"]
+    backward = ["rückwärts", "nach hinten", "zurück", "backward"]
+    slow = ["gemach", "etwas", "gemächlich", "ruhig"]
+    fast = ["schnell", "mit karacho", "ratzfatz", "richtig", "richtig schnell"]
+    speed_val = 0
+
+    if speedvalue != 'None':
+        speed_val = int(speedvalue)
+    else:
+        if speed in fast:
+            speed_val = 90
+        elif speed in slow:
+            speed_val = 30
+        else:
+            speed_val = 60
+    
+    if accelerationdirection in backward:
+        speed_perc = speed_val * -1
+        mqtt.publish('car/speed', speed_perc)
+        logger.info(f"Speed: {speed_perc}")
+        msg_val = "aus dem Sitz hebt?"
+    elif accelerationdirection in forward:
+        speed_perc = speed_val
+        mqtt.publish('car/speed', speed_perc)
+        logger.info(f"Speed: {speed_perc}")
+        msg_val = "in den Sitz presst?"
+    else:
+        logger.error(f"Invalid Values for Intent: accelerationdirection: {accelerationdirection}, speed: {speed}, speedvalue: {speedvalue}")
+        msg_val = "überhaupt nicht bewegt?"
+
     logger.info(f"accelerationdirection: {accelerationdirection}")
     logger.info(f"speed: {speed}")
     logger.info(f"speedvalue: {speedvalue}")
-    accel_msg = 'Fühlst du, wie es dich in den Sitz presst?'
+    accel_msg = f'Fühlst du, wie es dich {msg_val}'
     return question(accel_msg)
 
 @ask.intent("StopCarIntent")
 def stop_car():
-    stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt.'
-    return statement(stopCar_msg)
+    stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt. Was soll ich nun tun?'
+    return question(stopCar_msg)
 
 @ask.intent("AMAZON.StopIntent")
 def stop_car():
