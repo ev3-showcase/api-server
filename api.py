@@ -3,7 +3,6 @@ import sys
 import uuid
 import json
 import logging
-import requests
 from distutils.util import strtobool
 from flask import Flask, request, json, Response, jsonify
 from flask_ask import Ask, statement, question, session
