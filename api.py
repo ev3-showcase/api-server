@@ -77,23 +77,33 @@ def resolve_echo_request(echo_request):
 
 @ask.launch
 def start_skill():
-    welcome_message = 'Ok, I will start the engine. Now you can start driving.'
+    welcome_message = 'Okay. Ich starte den Motor. Du kannst jetzt losfahren.'
     return question(welcome_message)
 
 @ask.intent("SteerIntent")
 def steer_car():
-    steer_message = 'I can feel the corner.'
+    steer_message = 'Halt dich fest, jetzt geht es in die Kurve.'
     return question(steer_message)
 
 @ask.intent("AccelerateIntent")
 def accelerate_car():
-    accel_msg = 'Can you feel, how it does push you in the seat?'
+    accel_msg = 'Fühlst du, wie es dich in den Sitz presst?'
     return question(accel_msg)
 
 @ask.intent("StopCarIntent")
 def stop_car():
-    stop_msg = 'Oops, it seems i stalled the car.'
+    stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt.'
+    return statement(stopCar_msg)
+
+@ask.intent("StopIntent")
+def stop_car():
+    stop_msg = 'Okay, dann fahre ich halt allein nachhause. Tschüss'
     return statement(stop_msg)
+
+@ask.intent("HelpIntent")
+def stop_car():
+    help_msg = 'Du kannst das Auto abbiegen lassen, beschleunigen und anhalten. Rede einfach mit mir.'
+    return statement(help_msg)
 
 
 
