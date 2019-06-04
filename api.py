@@ -120,7 +120,7 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
 
     forward = ["vorwärts", "nach vorne", "geradeaus", "forward"]
     backward = ["rückwärts", "nach hinten", "zurück", "backward"]
-    slow = ["gemach", "etwas", "gemächlich", "ruhig"]
+    slow = ["gemach", "etwas", "gemächlich", "ruhig", "langsam"]
     fast = ["schnell", "mit karacho", "ratzfatz", "richtig", "richtig schnell"]
     speed_val = 0
 
@@ -139,20 +139,26 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
         speed_perc = speed_val * -1
         mqtt.publish('car/speed', speed_perc)
         logger.info(f"Speed: {speed_perc}")
-        msg_val = "aus dem Sitz hebt?"
+        if speed_val >= 50:
+            msg_val = "Fühlst du, wie es dich aus dem Sitz hebt?"
+        else: 
+            msg_val = "Siehst du einen Baum im Rückspiegel? Dann halt lieber an."
     elif accelerationdirection in forward:
         speed_perc = speed_val
         mqtt.publish('car/speed', speed_perc)
         logger.info(f"Speed: {speed_perc}")
-        msg_val = "in den Sitz presst?"
+        if speed_val >= 50:
+            msg_val = "Fühlst du, wie es dich in den Sitz presst?"
+        else: 
+            msg_val = "Sieh nur, wie wir dahingleiten."
     else:
         logger.error(f"Invalid Values for Intent: accelerationdirection: {accelerationdirection}, speed: {speed}, speedvalue: {speedvalue}")
-        msg_val = "überhaupt nicht bewegt?"
+        msg_val = "Fühlst du, wie sich überhaupt nichts bewegt?"
 
     logger.info(f"accelerationdirection: {accelerationdirection}")
     logger.info(f"speed: {speed}")
     logger.info(f"speedvalue: {speedvalue}")
-    accel_msg = f'Fühlst du, wie es dich {msg_val}'
+    accel_msg = msg_val
     return question(accel_msg)
 
 @ask.intent("StopCarIntent")
