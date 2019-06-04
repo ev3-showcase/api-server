@@ -163,9 +163,9 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
 
 @ask.intent("StopCarIntent")
 def stop_car():
-    mqtt.publish('car/speed', 0)
-    mqtt.publish('car/steering', 0)
-    logger.info("Stopping Car")
+    #mqtt.publish('car/speed', 0)
+    #mqtt.publish('car/steering', 0)
+    #logger.info("Stopping Car")
     stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt. Was soll ich nun tun?'
     return question(stopCar_msg)
 
