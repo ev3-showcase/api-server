@@ -126,6 +126,7 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
 
     if speedvalue != 'None':
         speed_val = int(speedvalue)
+        accelerationdirection = "geradeaus"
     else:
         if speed in fast:
             speed_val = 90
