@@ -171,6 +171,9 @@ def stop_car():
 
 @ask.intent("AMAZON.StopIntent")
 def stop_car():
+    mqtt.publish('car/speed', 0)
+    mqtt.publish('car/steering', 0)
+    logger.info("Stopping Car")
     stop_msg = 'Okay, dann fahre ich halt allein nachhause. Tschüss'
     return statement(stop_msg)
 
