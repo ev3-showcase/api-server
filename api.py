@@ -118,7 +118,7 @@ def steer_car(angle, direction):
 @ask.intent("AccelerateIntent", default={'accelerationdirection': 'None', 'speed': 'None', 'speedvalue': 'None'})
 def accelerate_car(accelerationdirection,speed,speedvalue):
 
-    forward = ["vorwärts", "nach vorne", "geradeaus", "forward"]
+    forward = ["vorwärts", "nach vorne", "los", "forward"]
     backward = ["rückwärts", "nach hinten", "zurück", "backward"]
     slow = ["gemach", "etwas", "gemächlich", "ruhig", "langsam"]
     fast = ["schnell", "mit karacho", "ratzfatz", "richtig", "richtig schnell"]
@@ -126,7 +126,7 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
 
     if speedvalue != 'None':
         speed_val = int(speedvalue)
-        accelerationdirection = "geradeaus"
+        accelerationdirection = "los"
     else:
         if speed in fast:
             speed_val = 90
@@ -135,6 +135,8 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
         else:
             speed_val = 60
     
+    if 
+
     if accelerationdirection in backward:
         speed_perc = speed_val * -1
         mqtt.publish('car/speed', speed_perc)
@@ -168,6 +170,13 @@ def stop_car():
     logger.info("Stopping Car")
     stopCar_msg = 'Oh, anscheinend habe ich den Motor abgewürgt. Was soll ich nun tun?'
     return question(stopCar_msg)
+
+@ask.intent("StraightIntent")
+def straighten_car():
+    mqtt.publish('car/steering', 0)
+    logger.info("Straighten Steering for Car")
+    straightCar_msg = 'Okay... Wir sind wieder auf Kurs.'
+    return question(straightCar_msg)
 
 @ask.intent("AMAZON.StopIntent")
 def stop_car():
