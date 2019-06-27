@@ -134,8 +134,6 @@ def accelerate_car(accelerationdirection,speed,speedvalue):
             speed_val = 30
         else:
             speed_val = 60
-    
-    if 
 
     if accelerationdirection in backward:
         speed_perc = speed_val * -1
