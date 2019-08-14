@@ -11,10 +11,6 @@ from distutils.util import strtobool
 
 import paho.mqtt.client as mqtt
 
-def count():
-    for i in range(0,3):
-        print (i)
-        sleep(1)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected as %s with result code %s" % (sub_name, str(rc)))
@@ -30,7 +26,6 @@ def on_message(client, userdata, msg):
     print("Message!")
     message = msg.payload.decode('utf-8')
     print(message)
-    count()
     
 
 def sigterm_handler(signal, frame):
