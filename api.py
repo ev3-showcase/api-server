@@ -55,7 +55,7 @@ def api_message():
         if "speed" in message.keys():
             speed_perc = message["speed"]
             mqtt.publish('car/speed', int(speed_perc))
-         if "steering" in message.keys():
+        if "steering" in message.keys():
             angle_perc = message["steering"]
             mqtt.publish('car/steering', int(angle_perc))
         return "Messages Sent!"
