@@ -6,10 +6,15 @@ import json
 import sys
 import time
 
+from time import sleep
 from distutils.util import strtobool
 
 import paho.mqtt.client as mqtt
 
+def count():
+    for i in range(0,3):
+        print (i)
+        sleep(1)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected as %s with result code %s" % (sub_name, str(rc)))
@@ -25,6 +30,8 @@ def on_message(client, userdata, msg):
     print("Message!")
     message = msg.payload.decode('utf-8')
     print(message)
+    count()
+    
 
 def sigterm_handler(signal, frame):
     client.disconnect()
@@ -39,19 +46,24 @@ def main():
 
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(broker, port, 60)
+    client.connect(broker, port, 60) 
+
+    '''print("Starting loop now")
+    client.loop_forever()'''
 
     client.loop_start()
-    time.sleep(60)
+    print("Loop Startet. Now waiting 600 Seconds for messages")
+    time.sleep(600)
+    print("Time over, bye.")
     client.loop_stop()
 
 
 if __name__ == '__main__':
-    broker = os.getenv('MQTT_BROKER', 'ts.rdy.one')
-    port =  int(os.getenv('MQTT_PORT', 11883))
+    broker = os.getenv('MQTT_BROKER', 'message-broker-mqtt-websocket-fk-sc.aotp012.mcs-paas.io')
+    port =  int(os.getenv('MQTT_PORT', 80))
     sub_name = os.getenv('HOSTNAME', ('subscriber-' + uuid.uuid4().hex.upper()[0:6]))
-    websocket = strtobool(os.getenv('MQTT_SOCKET', 'False'))
-    client = mqtt.Client(sub_name)
+    websocket = strtobool(os.getenv('MQTT_SOCKET', 'True'))
+    client = mqtt.Client(sub_name,transport='websockets')
     main()
 
 
