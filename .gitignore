@@ -1,2 +1,8 @@
 .vscode
 __pycache__
+certificate.pem
+configuration.cnf
+private-key.pem
+lamda.js
+model.json
+request.json
