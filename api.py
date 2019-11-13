@@ -7,12 +7,14 @@ from distutils.util import strtobool
 from flask import Flask, request, json, Response, jsonify
 from flask_ask import Ask, statement, question, session
 from flask_mqtt import Mqtt
+from flask_cors import CORS
 
 loglevel = os.getenv('LOGLEVEL', 'info')
 logging.basicConfig(level=getattr(logging, loglevel.upper()),stream=sys.stderr)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET'] = 'my secret key'
 app.config['MQTT_BROKER_URL'] = os.getenv('MQTT_BROKER', 'localhost')
 app.config['MQTT_BROKER_PORT'] = int(os.getenv('MQTT_PORT', 1883))
