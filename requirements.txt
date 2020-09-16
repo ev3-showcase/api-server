@@ -3,7 +3,7 @@ asn1crypto==0.24.0
 cffi==1.12.3
 Click==7.0
 cryptography<2.2
-Flask==0.12.1
+Flask==1.0
 Flask-Ask==0.9.8
 Flask-MQTT==1.0.5
 Flask-Cors==3.0.8
