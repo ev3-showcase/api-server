@@ -14,7 +14,7 @@ paho-mqtt==1.4.0
 pycparser==2.19
 pyOpenSSL==17.0.0
 python-dateutil==2.8.0
-PyYAML==3.12
+PyYAML==5.4
 six==1.11.0
 typing==3.6.6
 Werkzeug==0.15.2
