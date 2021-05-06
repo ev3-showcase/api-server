@@ -6,7 +6,7 @@ cryptography<2.2
 Flask==0.12.1
 Flask-Ask==0.9.8
 Flask-MQTT==1.0.5
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
